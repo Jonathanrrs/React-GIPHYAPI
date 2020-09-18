@@ -1,21 +1,43 @@
-import React, {useState} from 'react';
+import React from 'react';
 import './App.css';
-import ListOfGifs from './components/ListOfGifs';
+import Home from './pages/Home';
+import SearchResults from './pages/SearchResults';
+import Detail from './pages/Detail';
+import StaticContext from "./context/StaticContex";
+import {GifsContextProvider} from './context/GifsContext';
 
-import { Link ,Route } from "wouter"; 
+import { Link, Route } from "wouter"; 
 
-function App() {
-  const [keyword, setKeyword] = useState('cr7');
- return (
+export default function App() {
+  return (
+    <StaticContext.Provider value={{name: 'Jonathan',
+    suscribeteAlCanal: true}}>
     <div className="App">
       <section className="App-content">
-        <h1>App</h1>
-        <Link to='/gif/cr7'>Gifs Cr7</Link> {/* Esto es por en lugar de etiqueta a y adentro href lo cambiamos por la herramientra de wouter, que seria Link y href sería to, porque con la etiqueta a la página se refresca, y con wouter se mantiene en una single page aplication  */}
-        <Link to='/gif/apple'>Gifs Apple</Link>
-      <Route path="/gif/:keyword" component={ListOfGifs }/>
+        <Link to="/">
+          <img className="App-logo" alt="Giffy logo" src="/logo.png"></img>
+        </Link>
+        <GifsContextProvider>
+        <Route
+          component={Home}
+          path="/"
+          >
+        </Route>
+        <Route
+          component={SearchResults}
+          path="/search/:keyword"
+        >
+        </Route>
+        <Route
+          component={Detail}
+          path="/gif/:id"
+        >
+        </Route>
+        </GifsContextProvider>
       </section>
     </div>
-  );
+    </StaticContext.Provider>
+  )
 }
 
-export default App;
+
